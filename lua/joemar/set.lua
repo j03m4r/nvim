@@ -29,3 +29,8 @@ vim.diagnostic.config({
     update_in_insert = true,
     underline = true,
 })
+
+vim.cmd([[
+  autocmd BufRead,BufNewFile *.html set filetype=html
+]])
+

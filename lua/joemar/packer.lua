@@ -7,6 +7,10 @@ return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
 
+    use { "catppuccin/nvim", as = "catppuccin" }
+
+    use { "scottmckendry/cyberdream.nvim" }
+
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.6',
         -- or                            , branch = '0.1.x',
@@ -73,4 +77,9 @@ return require('packer').startup(function(use)
     use "windwp/nvim-ts-autotag"
 
     use "avneesh0612/react-nextjs-snippets"
+
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+    }
 end)
