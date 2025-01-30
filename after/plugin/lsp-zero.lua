@@ -6,9 +6,9 @@ vim.opt.signcolumn = "yes"
 -- This should be executed before you configure any language server
 local lspconfig_defaults = require("lspconfig").util.default_config
 lspconfig_defaults.capabilities = vim.tbl_deep_extend(
-  "force",
-  lspconfig_defaults.capabilities,
-  require("cmp_nvim_lsp").default_capabilities()
+    "force",
+    lspconfig_defaults.capabilities,
+    require("cmp_nvim_lsp").default_capabilities()
 )
 
 lsp_zero.on_attach(function(_, bufnr)
@@ -32,29 +32,39 @@ local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 -- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
 require("mason").setup({})
 require("mason-lspconfig").setup({
-    ensure_installed = { "rust_analyzer", "ts_ls", "lua_ls", "ember", "cssls", "tailwindcss", "html", "glint" },
+    ensure_installed = { "volar", "rust_analyzer", "ts_ls", "lua_ls", "ember", "cssls", "tailwindcss", "html", "glint" },
     handlers = {
         function(server_name)
             require("lspconfig")[server_name].setup({
                 capabilities = lsp_capabilities,
             })
         end,
+        volar = function()
+            require("lspconfig").volar.setup({
+                capabilities = lsp_capabilities,
+                on_attach = function(_, bufnr)
+                    vim.bo[bufnr].shiftwidth = 4
+                    vim.bo[bufnr].tabstop = 4
+                    vim.bo[bufnr].expandtab = true
+                end,
+            })
+        end,
         ts_ls = function()
             require("lspconfig").ts_ls.setup({
                 capabilities = lsp_capabilities,
-                filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact" },
+                filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue" },
             })
         end,
         html = function()
             require("lspconfig").html.setup({
                 capabilities = lsp_capabilities,
-                filetypes = { "handlebars", "typescriptreact", "html" },
+                filetypes = { "handlebars", "typescriptreact", "html", "vue" },
             })
         end,
         tailwindcss = function()
             require("lspconfig").tailwindcss.setup({
                 capabilities = lsp_capabilities,
-                filetypes = { "handlebars", "typescriptreact", "html" },
+                filetypes = { "vue", "handlebars", "typescriptreact", "html" },
             })
         end,
         cssls = function()
@@ -97,30 +107,6 @@ require("mason-lspconfig").setup({
         end,
     }
 })
-
--- vim.api.nvim_create_autocmd("FileType", {
---     pattern = "handlebars",
---     callback = function()
---         -- Attach html LSP
---         require("lspconfig")["html"].setup({
---             filetypes = {"handlebars"}
---         })
---
---         -- Attach css LSP
---         require("lspconfig")["tailwindcss"].setup({
---             filetypes = {"handlebars"}
---         })
---
---         -- Attach ember LSP
---         require("lspconfig")["ember"].setup({
---             filetypes = {"handlebars"}
---         })
---
---         require("lspconfig")["glint"].setup({
---             filetypes = {"handlebars"}
---         })
---     end,
--- })
 
 local cmp = require("cmp")
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
