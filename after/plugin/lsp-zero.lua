@@ -64,7 +64,7 @@ require("mason-lspconfig").setup({
         tailwindcss = function()
             require("lspconfig").tailwindcss.setup({
                 capabilities = lsp_capabilities,
-                filetypes = { "vue", "handlebars", "typescriptreact", "html" },
+                filetypes = { "vue", "handlebars", "typescriptreact", "html", "svelte" },
             })
         end,
         cssls = function()
